@@ -1,0 +1,538 @@
+
+/* OCEANIS SYSTEM - BOOTSTRAP DARK */
+
+:root {
+    --ocean-bg: #0B1220;
+    --ocean-surface: #101B2D;
+    --ocean-surface-alt: #162237;
+    --ocean-header: #1C2C43;
+    --ocean-primary: #486581;
+    --ocean-primary-hover: #627F9D;
+    --ocean-border: #334155;
+    --ocean-text: #E2E8F0;
+    --ocean-muted: #94A3B8;
+    --ocean-ivory: #E4DFBC;
+}
+
+/* CONTENEDOR DE TABLAS */
+
+.ocean-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    background: var(--ocean-surface);
+    border: 1px solid var(--ocean-border);
+    border-radius: 10px;
+}
+
+/* TABLAS */
+
+.ocean-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: var(--ocean-text);
+    text-align: left;
+}
+
+.ocean-table thead {
+    background: var(--ocean-header);
+    color: var(--ocean-ivory);
+}
+
+.ocean-table th {
+    padding: 14px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--ocean-border);
+}
+
+.ocean-table td {
+    padding: 13px 16px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--ocean-border);
+}
+
+.ocean-table tbody tr {
+    background: var(--ocean-surface);
+    transition: background 0.2s ease;
+}
+
+.ocean-table-striped tbody tr:nth-child(even) {
+    background: var(--ocean-surface-alt);
+}
+
+.ocean-table-hover tbody tr:hover {
+    background: #243750;
+}
+
+.ocean-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ocean-table-bordered th,
+.ocean-table-bordered td {
+    border: 1px solid var(--ocean-border);
+}
+
+.ocean-table-sm th,
+.ocean-table-sm td {
+    padding: 8px 12px;
+}
+
+/* ESTADOS */
+
+.ocean-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ocean-badge-disponible {
+    background: #153C37;
+    color: #70C8A0;
+}
+
+.ocean-badge-ocupado {
+    background: #432A36;
+    color: #F0A5A5;
+}
+
+.ocean-badge-mantenimiento {
+    background: #44392C;
+    color: #F4C477;
+}
+
+.ocean-badge-programado {
+    background: #213A56;
+    color: #A8C9F0;
+}
+
+.ocean-badge-operacion {
+    background: #203D53;
+    color: #83C9EA;
+}
+
+.ocean-badge-finalizado {
+    background: #303746;
+    color: #CBD5E1;
+}
+
+.ocean-badge-cancelado {
+    background: #432A36;
+    color: #F0A5A5;
+}
+
+.ocean-badge-retrasado {
+    background: #44392C;
+    color: #F4C477;
+}
+
+.ocean-badge-fuera {
+    background: #303746;
+    color: #CBD5E1;
+}
+
+/* BOTONES */
+
+.ocean-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 13px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.ocean-btn-primary {
+    background: var(--ocean-primary);
+    color: #FFFFFF;
+}
+
+.ocean-btn-primary:hover {
+    background: var(--ocean-primary-hover);
+}
+
+.ocean-btn-outline {
+    background: transparent;
+    border-color: #627F9D;
+    color: #C6D6E8;
+}
+
+.ocean-btn-outline:hover {
+    background: #243750;
+}
+
+.ocean-btn-danger {
+    background: #432A36;
+    color: #F0A5A5;
+}
+
+.ocean-btn-danger:hover {
+    background: #633743;
+}
+
+.ocean-btn:focus-visible {
+    outline: 2px solid #A8C9F0;
+    outline-offset: 3px;
+}
+
+
+/* NAVBAR OCEANIS - NAVAL HERITAGE */
+
+.ocean-navbar {
+    width: 100%;
+    background: #101936;
+    border-bottom: 1px solid #293D59;
+    font-family: Arial, sans-serif;
+}
+
+/* PARTE SUPERIOR */
+
+.ocean-navbar-top {
+    min-height: 76px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 35px;
+}
+
+.ocean-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    color: #F8F5E7;
+}
+
+.ocean-brand:hover {
+    color: #E4DFBC;
+}
+
+.ocean-brand > i {
+    font-size: 28px;
+    color: #E4DFBC;
+}
+
+.ocean-brand span {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ocean-brand strong {
+    font-size: 19px;
+    letter-spacing: 1px;
+}
+
+.ocean-brand small {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #829AB1;
+}
+
+/* ICONOS DE USUARIO */
+
+.ocean-navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    color: #829AB1;
+    font-size: 21px;
+}
+
+.ocean-navbar-user .fa-circle-user {
+    color: #E4DFBC;
+    font-size: 29px;
+}
+
+/* PARTE INFERIOR */
+
+.ocean-navbar-bottom {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 0 35px;
+    min-height: 51px;
+    border-top: 1px solid #293D59;
+}
+
+.ocean-navbar-bottom a {
+    display: inline-flex;
+    align-items: center;
+    height: 51px;
+    color: #94A3B8;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease;
+}
+
+.ocean-navbar-bottom a:hover {
+    color: #E4DFBC;
+}
+
+.ocean-navbar-bottom a.active {
+    color: #E4DFBC;
+    border-bottom-color: #E4DFBC;
+    font-weight: 600;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .ocean-navbar-top {
+        padding: 15px 20px;
+    }
+
+    .ocean-brand strong {
+        font-size: 15px;
+    }
+
+    .ocean-navbar-bottom {
+        padding: 0 20px;
+        gap: 22px;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .ocean-navbar-bottom a {
+        flex-shrink: 0;
+    }
+
+}
+
+
+
+/* FUENTES RAJDHANI */
+
+@font-face {
+    font-family: 'Rajdhani';
+    src: url('../font/Rajdhani-Light.ttf') format('truetype');
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'Rajdhani';
+    src: url('../font/Rajdhani-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Rajdhani';
+    src: url('../font/Rajdhani-Medium.ttf') format('truetype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Rajdhani';
+    src: url('../font/Rajdhani-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: 'Rajdhani';
+    src: url('../font/Rajdhani-Bold.ttf') format('truetype');
+    font-weight: 700;
+}
+
+/* APLICAR A TODO EL SISTEMA */
+
+:root {
+    --bs-body-font-family: 'Rajdhani', sans-serif;
+}
+
+body,
+body *:not(i):not(.fa):not(.fas):not(.far):not(.fab):not(.fa-solid):not(.fa-regular):not(.fa-brands) {
+    font-family: 'Rajdhani', sans-serif !important;
+}
+
+body {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+
+.ocean-table th {
+    font-weight: 700;
+}
+
+.ocean-table td {
+    font-weight: 500;
+}
+
+.btn,
+.ocean-btn,
+.nav-link,
+.ocean-navbar-bottom a {
+    font-weight: 600;
+}
+
+
+/* ======================================
+   OCEANIS SYSTEM - BUSCADOR
+   ====================================== */
+
+.ocean-search {
+    background: #101B2D;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.ocean-search label {
+    display: block;
+    color: #E4DFBC;
+    font-size: 15px;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+.ocean-search .input-group-text {
+    background: #1C2C43;
+    color: #829AB1;
+    border: 1px solid #334155;
+    padding: 10px 15px;
+}
+
+.ocean-search .form-control {
+    background: #162237;
+    color: #E2E8F0;
+    border: 1px solid #334155;
+    font-size: 15px;
+    padding: 10px 15px;
+    box-shadow: none;
+}
+
+.ocean-search .form-control::placeholder {
+    color: #829AB1;
+}
+
+.ocean-search .form-control:focus {
+    background: #1C2C43;
+    color: #FFFFFF;
+    border-color: #829AB1;
+    box-shadow: 0 0 0 2px rgba(130, 154, 177, 0.15);
+}
+
+.ocean-search .btn-search {
+    background: #486581;
+    color: #FFFFFF;
+    border: 1px solid #486581;
+    padding: 10px 25px;
+    font-size: 15px;
+    transition: 0.2s ease;
+}
+
+.ocean-search .btn-search:hover {
+    background: #627F9D;
+    border-color: #627F9D;
+    color: #FFFFFF;
+}
+
+.ocean-search .btn-search:focus-visible {
+    outline: 2px solid #E4DFBC;
+    outline-offset: 2px;
+}
+
+@media (max-width: 576px) {
+    .ocean-search {
+        padding: 15px;
+    }
+
+    .ocean-search .btn-search {
+        padding: 10px 15px;
+    }
+}
+
+
+/* PAGINACION OCEANIS SYSTEM */
+
+.ocean-page-info {
+    color: #94A3B8;
+    font-size: 14px;
+}
+
+.ocean-pagination {
+    gap: 5px;
+}
+
+.ocean-pagination .page-link {
+    background: #162237;
+    color: #CBD5E1;
+    border: 1px solid #334155;
+    border-radius: 5px !important;
+    padding: 7px 13px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.ocean-pagination .page-link:hover {
+    background: #293D59;
+    color: #FFFFFF;
+    border-color: #486581;
+}
+
+.ocean-pagination .page-item.active .page-link {
+    background: #486581;
+    border-color: #486581;
+    color: #FFFFFF;
+}
+
+.ocean-pagination .page-item.disabled .page-link {
+    background: #101B2D;
+    color: #64748B;
+    border-color: #253247;
+}
+
+.ocean-pagination .page-link:focus-visible {
+    box-shadow: 0 0 0 2px rgba(130, 154, 177, 0.2);
+}
+
+
+/* LOGOTIPO OCEANIS SYSTEM */
+
+.ocean-logo {
+    width: 54px;
+    height: 54px;
+    object-fit: contain;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.ocean-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+}
+
+.ocean-brand span {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+@media (max-width: 576px) {
+    .ocean-logo {
+        width: 44px;
+        height: 44px;
+    }
+}
