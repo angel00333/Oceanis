@@ -18,7 +18,7 @@ public class PuertoDAO {
     public int InsertarPuerto(Puerto puerto) {
         int n = 0;
         try {
-            sql = conectar().prepareStatement("INSERT INTO Puerto(nombre, direccion)" + "VALUES(?)");
+            sql = conectar().prepareStatement("INSERT INTO puertos(nombre, direccion)" + "VALUES(?,?)");
             sql.setString(1, puerto.getNombre());
             sql.setString(2, puerto.getDireccion());
             n = sql.executeUpdate();
@@ -32,7 +32,7 @@ public class PuertoDAO {
     public int ModificarPuerto(Puerto puerto) {
         int n = 0;
         try {
-            sql = conectar().prepareStatement("UPDATE Puerto SET nombre=?, direccion=? WHERE Id=?");
+            sql = conectar().prepareStatement("UPDATE puertos SET nombre=?, direccion=? WHERE Id=?");
             sql.setString(1, puerto.getNombre());
             sql.setString(2, puerto.getDireccion());
             sql.setInt(3, puerto.getId());
@@ -47,7 +47,7 @@ public class PuertoDAO {
     public int EliminarPuerto(Puerto puerto) {
         int n = 0;
         try {
-            sql = conectar().prepareStatement("DELETE FROM Puerto WHERE Id=?");
+            sql = conectar().prepareStatement("DELETE FROM puertos WHERE Id=?");
             sql.setInt(1, puerto.getId());
             n = sql.executeUpdate();
             sql.close();
@@ -60,7 +60,7 @@ public class PuertoDAO {
     public ArrayList<Puerto> MostrarPuertos() {
         ArrayList<Puerto> puertos = new ArrayList<>();
         try{
-            sql = conectar().prepareStatement("SELECT * FROM Puerto");
+            sql = conectar().prepareStatement("SELECT * FROM puertos");
             rs = sql.executeQuery();
             while(rs.next()) {
                 puerto = new Puerto (rs.getInt(1), rs.getString(2), rs.getString(3));
@@ -96,7 +96,7 @@ public class PuertoDAO {
     
     public Puerto ObtenerPuertoPorId(int id) {
         try{
-            sql = conectar().prepareStatement("SELECT * FROM Puerto WHERE Id=?");
+            sql = conectar().prepareStatement("SELECT * FROM puertos WHERE Id=?");
             sql.setInt(1, id);
             rs = sql.executeQuery();
             while(rs.next()) {

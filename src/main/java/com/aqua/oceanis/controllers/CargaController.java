@@ -50,23 +50,42 @@ public class CargaController extends HttpServlet {
                     request.setAttribute("DatosCarga", cargaDAO.BuscarCargas(request.getParameter("texto")));
             }
 
+             // Guarda la carga con sus relaciones maestro-detalle
             if(request.getParameter("guardar") != null) {
-                atraque = new Atraque(Integer.parseInt(request.getParameter("atraque")),
-                        null, null, null, null, "");
-                cliente = new Cliente(Integer.parseInt(request.getParameter("cliente")), "", "");
+                // CAMBIO: Obtiene los objetos maestros seleccionados
+                atraque = atraqueDAO.ObtenerAtraquePorId(Integer.parseInt(request.getParameter("idatraque")));
+                cliente = clienteDAO.ObtenerClientePorId(Integer.parseInt(request.getParameter("idcliente")));
 
-                carga = new Carga(1, atraque, cliente,
+                // CAMBIO: Verifica que existan los registros
+                if(atraque == null || cliente == null) {
+                    response.sendError(400, "El atraque o cliente seleccionado no existe.");
+                    return;
+                }
+
+                carga = new Carga(0, atraque, cliente,
                         request.getParameter("descripcion"),
                         new BigDecimal(request.getParameter("peso")),
                         request.getParameter("tipo"));
 
-                cargaDAO.InsertarCarga(carga);
+                // CAMBIO: Verifica que se haya guardado
+                if(cargaDAO.InsertarCarga(carga) > 0)
+                    response.sendRedirect("carga?mostrar");
+                else
+                    response.sendError(500, "No se pudo guardar la carga.");
+                return;
             }
 
+           
+            // Modifica una carga existente
             if(request.getParameter("modificar") != null) {
-                atraque = new Atraque(Integer.parseInt(request.getParameter("atraque")),
-                        null, null, null, null, "");
-                cliente = new Cliente(Integer.parseInt(request.getParameter("cliente")), "", "");
+                // CAMBIO: Obtiene los objetos maestros seleccionados
+                atraque = atraqueDAO.ObtenerAtraquePorId(Integer.parseInt(request.getParameter("idatraque")));
+                cliente = clienteDAO.ObtenerClientePorId(Integer.parseInt(request.getParameter("idcliente")));
+
+                if(atraque == null || cliente == null) {
+                    response.sendError(400, "El atraque o cliente seleccionado no existe.");
+                    return;
+                }
 
                 carga = new Carga(Integer.parseInt(request.getParameter("id")),
                         atraque, cliente,
@@ -74,13 +93,24 @@ public class CargaController extends HttpServlet {
                         new BigDecimal(request.getParameter("peso")),
                         request.getParameter("tipo"));
 
-                cargaDAO.ModificarCarga(carga);
+                // CAMBIO: Verifica que se haya modificado
+                if(cargaDAO.ModificarCarga(carga) > 0)
+                    response.sendRedirect("carga?mostrar");
+                else
+                    response.sendError(500, "No se pudo modificar la carga.");
+                return;
             }
 
-            if(request.getParameter("eliminar") != null) {
+                        if(request.getParameter("eliminar") != null) {
                 carga = new Carga(Integer.parseInt(request.getParameter("id")),
                         null, null, "", BigDecimal.ZERO, "");
-                cargaDAO.EliminarCarga(carga);
+
+                // CAMBIO: Elimina y verifica el resultado
+                if(cargaDAO.EliminarCarga(carga) > 0)
+                    response.sendRedirect("carga?mostrar");
+                else
+                    response.sendError(500, "No se pudo eliminar la carga.");
+                return;
             }
 
             req = request.getRequestDispatcher("VistaCarga.jsp");

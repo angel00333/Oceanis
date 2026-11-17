@@ -22,15 +22,6 @@ import java.time.LocalDateTime;
 @WebServlet(name = "AtraqueController", urlPatterns = {"/atraque"})
 public class AtraqueController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -43,6 +34,7 @@ public class AtraqueController extends HttpServlet {
             AtraqueDAO atraqueDAO = new AtraqueDAO();
             RequestDispatcher req;
 
+            // Muestra o busca los atraques
             if(request.getParameter("mostrar") != null) {
                 if(request.getParameter("texto") == null)
                     request.setAttribute("DatosAtraque", atraqueDAO.MostrarAtraques());
@@ -50,22 +42,40 @@ public class AtraqueController extends HttpServlet {
                     request.setAttribute("DatosAtraque", atraqueDAO.BuscarAtraques(request.getParameter("texto")));
             }
 
+            // Guarda un atraque con barco y muelle asociados
             if(request.getParameter("guardar") != null) {
-                barco = new Barco(Integer.parseInt(request.getParameter("barco")), "", "", "");
-                muelle = new Muelle(Integer.parseInt(request.getParameter("muelle")), null, "", "");
+                // CAMBIO: Obtiene los objetos maestros según los ID recibidos
+                barco = barcoDAO.ObtenerBarcoPorId(Integer.parseInt(request.getParameter("idbarco")));
+                muelle = muelleDAO.ObtenerMuellePorId(Integer.parseInt(request.getParameter("idmuelle")));
 
-                atraque = new Atraque(1, barco, muelle,
+                // CAMBIO: Valida que existan ambos registros
+                if(barco == null || muelle == null) {
+                    response.sendError(400, "El barco o muelle seleccionado no existe.");
+                    return;
+                }
+
+                atraque = new Atraque(0, barco, muelle,
                         LocalDateTime.parse(request.getParameter("fecha_llegada")),
                         request.getParameter("fecha_salida").isEmpty()
                             ? null : LocalDateTime.parse(request.getParameter("fecha_salida")),
                         request.getParameter("estado"));
 
                 atraqueDAO.InsertarAtraque(atraque);
+                // CAMBIO: Regresa al listado actualizado
+                response.sendRedirect("atraque?mostrar");
+                return;
             }
 
+            // Modifica un atraque existente
             if(request.getParameter("modificar") != null) {
-                barco = new Barco(Integer.parseInt(request.getParameter("barco")), "", "", "");
-                muelle = new Muelle(Integer.parseInt(request.getParameter("muelle")), null, "", "");
+                // CAMBIO: Obtiene los objetos maestros según los ID recibidos
+                barco = barcoDAO.ObtenerBarcoPorId(Integer.parseInt(request.getParameter("idbarco")));
+                muelle = muelleDAO.ObtenerMuellePorId(Integer.parseInt(request.getParameter("idmuelle")));
+
+                if(barco == null || muelle == null) {
+                    response.sendError(400, "El barco o muelle seleccionado no existe.");
+                    return;
+                }
 
                 atraque = new Atraque(Integer.parseInt(request.getParameter("id")),
                         barco, muelle,
@@ -75,56 +85,42 @@ public class AtraqueController extends HttpServlet {
                         request.getParameter("estado"));
 
                 atraqueDAO.ModificarAtraque(atraque);
+                // CAMBIO: Regresa al listado actualizado
+                response.sendRedirect("atraque?mostrar");
+                return;
             }
 
+            // Elimina un atraque
             if(request.getParameter("eliminar") != null) {
                 atraque = new Atraque(Integer.parseInt(request.getParameter("id")),
                         null, null, null, null, "");
                 atraqueDAO.EliminarAtraque(atraque);
+
+                // CAMBIO: Actualiza el listado
+                response.sendRedirect("atraque?mostrar");
+                return;
             }
 
             req = request.getRequestDispatcher("VistaAtraque.jsp");
             req.forward(request, response);
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
+    // </editor-fold>
 }

@@ -18,98 +18,169 @@ import com.aqua.oceanis.models.*;
  *
  * @author a503o
  */
+/**
+ * Controlador para gestionar los muelles.
+ */
 @WebServlet(name = "MuelleController", urlPatterns = {"/muelle"})
 public class MuelleController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request,
+            HttpServletResponse response)
             throws ServletException, IOException {
+
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            Muelle muelle;
-            Puerto puerto;
-            MuelleDAO muelleDAO = new MuelleDAO();
-            PuertoDAO puertoDAO = new PuertoDAO();
-            RequestDispatcher req;
 
-            if(request.getParameter("mostrar") != null) {
-                if(request.getParameter("texto") == null)
-                    request.setAttribute("DatosMuelle", muelleDAO.MostrarMuelles());
-                else
-                    request.setAttribute("DatosMuelle", muelleDAO.BuscarMuelles(request.getParameter("texto")));
-            }
+        // Inicializa los objetos y DAO
+        Muelle muelle;
+        Puerto puerto;
+        MuelleDAO muelleDAO = new MuelleDAO();
+        PuertoDAO puertoDAO = new PuertoDAO();
+        RequestDispatcher req;
 
-            if(request.getParameter("guardar") != null) {
-                puerto = new Puerto(Integer.parseInt(request.getParameter("puerto")), "", "");
-                muelle = new Muelle(1, puerto, request.getParameter("nombre"),
-                        request.getParameter("estado"));
-                muelleDAO.InsertarMuelle(muelle);
-            }
+        // Muestra o busca los muelles registrados
+        if(request.getParameter("mostrar") != null) {
 
-            if(request.getParameter("modificar") != null) {
-                puerto = new Puerto(Integer.parseInt(request.getParameter("puerto")), "", "");
-                muelle = new Muelle(Integer.parseInt(request.getParameter("id")),
-                        puerto, request.getParameter("nombre"),
-                        request.getParameter("estado"));
-                muelleDAO.ModificarMuelle(muelle);
-            }
-
-            if(request.getParameter("eliminar") != null) {
-                muelle = new Muelle(Integer.parseInt(request.getParameter("id")),
-                        null, "", "");
-                muelleDAO.EliminarMuelle(muelle);
-            }
-
-            req = request.getRequestDispatcher("VistaMuelle.jsp");
-            req.forward(request, response);
+            if(request.getParameter("texto") == null)
+                request.setAttribute(
+                    "DatosMuelle",
+                    muelleDAO.MostrarMuelles()
+                );
+            else
+                request.setAttribute(
+                    "DatosMuelle",
+                    muelleDAO.BuscarMuelles(
+                        request.getParameter("texto")
+                    )
+                );
         }
+
+        // Guarda un nuevo muelle
+        if(request.getParameter("guardar") != null) {
+
+            // CAMBIO: Recibe idpuerto desde FormMuelle.jsp
+            int idpuerto = Integer.parseInt(
+                request.getParameter("idpuerto")
+            );
+
+            // CAMBIO: Obtiene el puerto seleccionado
+            puerto = puertoDAO.ObtenerPuertoPorId(idpuerto);
+
+            // CAMBIO: Verifica que el puerto exista
+            if(puerto == null) {
+                response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "El puerto seleccionado no existe."
+                );
+                return;
+            }
+
+            // Construye el nuevo muelle
+            muelle = new Muelle(
+                0,
+                puerto,
+                request.getParameter("nombre"),
+                request.getParameter("estado")
+            );
+
+            // Inserta el registro
+            int n = muelleDAO.InsertarMuelle(muelle);
+
+            // CAMBIO: Comprueba si se guardó correctamente
+            if(n > 0) {
+                response.sendRedirect("muelle?mostrar");
+            } else {
+                response.sendError(
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "No se pudo guardar el muelle."
+                );
+            }
+            return;
+        }
+
+        // Modifica un muelle existente
+        if(request.getParameter("modificar") != null) {
+
+            // CAMBIO: Recibe idpuerto desde FormMuelle.jsp
+            int idpuerto = Integer.parseInt(
+                request.getParameter("idpuerto")
+            );
+
+            // CAMBIO: Obtiene el puerto seleccionado
+            puerto = puertoDAO.ObtenerPuertoPorId(idpuerto);
+
+            // CAMBIO: Verifica que el puerto exista
+            if(puerto == null) {
+                response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "El puerto seleccionado no existe."
+                );
+                return;
+            }
+
+            // Construye el muelle con los nuevos datos
+            muelle = new Muelle(
+                Integer.parseInt(request.getParameter("id")),
+                puerto,
+                request.getParameter("nombre"),
+                request.getParameter("estado")
+            );
+
+            // Actualiza el registro
+            int n = muelleDAO.ModificarMuelle(muelle);
+
+            // CAMBIO: Comprueba si se modificó correctamente
+            if(n > 0) {
+                response.sendRedirect("muelle?mostrar");
+            } else {
+                response.sendError(
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "No se pudo modificar el muelle."
+                );
+            }
+            return;
+        }
+
+        // Elimina un muelle mediante su ID
+        if(request.getParameter("eliminar") != null) {
+
+            muelle = new Muelle(
+                Integer.parseInt(request.getParameter("id")),
+                null, "", ""
+            );
+
+            muelleDAO.EliminarMuelle(muelle);
+
+            // CAMBIO: Regresa al listado actualizado
+            response.sendRedirect("muelle?mostrar");
+            return;
+        }
+
+        // Envía los registros a la vista
+        req = request.getRequestDispatcher("VistaMuelle.jsp");
+        req.forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    // Atiende las solicitudes GET
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request,
+            HttpServletResponse response)
             throws ServletException, IOException {
+
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    // Atiende las solicitudes POST
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response)
             throws ServletException, IOException {
+
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    // Devuelve información del Servlet
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Controlador de Muelles";
+    }
 }

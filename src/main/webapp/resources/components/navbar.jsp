@@ -33,7 +33,7 @@
         <a href="cliente?mostrar">Clientes</a>
         <a href="atraque?mostrar">Atraques</a>
         <a href="carga?mostrar">Cargas</a>
-
+     
     </div>
 
 </nav>
