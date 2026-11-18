@@ -5,6 +5,14 @@
 --%>
 
 <%@page import="java.util.*, com.aqua.oceanis.models.*" contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    HttpSession sesion = request.getSession(false);
+
+    if(sesion == null || sesion.getAttribute("sesion") == null){
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>

@@ -12,6 +12,10 @@
         <servlet-name>ClienteController</servlet-name>
         <servlet-class>com.aqua.oceanis.controllers.ClienteController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UsuarioController</servlet-name>
+        <servlet-class>com.aqua.oceanis.controllers.UsuarioController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>BarcoController</servlet-name>
         <url-pattern>/barco</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>ClienteController</servlet-name>
         <url-pattern>/cliente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UsuarioController</servlet-name>
+        <url-pattern>/usuario</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

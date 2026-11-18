@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import com.aqua.oceanis.models.*;
 import java.time.LocalDateTime;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -26,83 +27,222 @@ public class AtraqueController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
+            Atraque atraque;
             Barco barco;
             Muelle muelle;
-            Atraque atraque;
-            BarcoDAO barcoDAO = new BarcoDAO();
-            MuelleDAO muelleDAO = new MuelleDAO();
+
             AtraqueDAO atraqueDAO = new AtraqueDAO();
             RequestDispatcher req;
 
-            // Muestra o busca los atraques
-            if(request.getParameter("mostrar") != null) {
-                if(request.getParameter("texto") == null)
-                    request.setAttribute("DatosAtraque", atraqueDAO.MostrarAtraques());
-                else
-                    request.setAttribute("DatosAtraque", atraqueDAO.BuscarAtraques(request.getParameter("texto")));
+            HttpSession sesion = request.getSession(false);
+
+            if (sesion == null
+                    || sesion.getAttribute("sesion") == null
+                    || !(sesion.getAttribute("idusuario") instanceof Integer)) {
+
+                response.sendRedirect("login.jsp");
+                return;
             }
 
-            // Guarda un atraque con barco y muelle asociados
-            if(request.getParameter("guardar") != null) {
-                // CAMBIO: Obtiene los objetos maestros según los ID recibidos
-                barco = barcoDAO.ObtenerBarcoPorId(Integer.parseInt(request.getParameter("idbarco")));
-                muelle = muelleDAO.ObtenerMuellePorId(Integer.parseInt(request.getParameter("idmuelle")));
+            int idusuario = (Integer) sesion.getAttribute("idusuario");
+            String usuario = sesion.getAttribute("sesion").toString();
 
-                // CAMBIO: Valida que existan ambos registros
-                if(barco == null || muelle == null) {
-                    response.sendError(400, "El barco o muelle seleccionado no existe.");
-                    return;
+            // MOSTRAR ATRAQUES
+
+            if (request.getParameter("mostrar") != null) {
+
+                if (request.getParameter("texto") == null) {
+
+                    request.setAttribute(
+                            "DatosAtraque",
+                            atraqueDAO.MostrarAtraques()
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "DatosAtraque",
+                            atraqueDAO.BuscarAtraques(
+                                    request.getParameter("texto")
+                            )
+                    );
                 }
-
-                atraque = new Atraque(0, barco, muelle,
-                        LocalDateTime.parse(request.getParameter("fecha_llegada")),
-                        request.getParameter("fecha_salida").isEmpty()
-                            ? null : LocalDateTime.parse(request.getParameter("fecha_salida")),
-                        request.getParameter("estado"));
-
-                atraqueDAO.InsertarAtraque(atraque);
-                // CAMBIO: Regresa al listado actualizado
-                response.sendRedirect("atraque?mostrar");
-                return;
             }
 
-            // Modifica un atraque existente
-            if(request.getParameter("modificar") != null) {
-                // CAMBIO: Obtiene los objetos maestros según los ID recibidos
-                barco = barcoDAO.ObtenerBarcoPorId(Integer.parseInt(request.getParameter("idbarco")));
-                muelle = muelleDAO.ObtenerMuellePorId(Integer.parseInt(request.getParameter("idmuelle")));
+            // GUARDAR ATRAQUE
 
-                if(barco == null || muelle == null) {
-                    response.sendError(400, "El barco o muelle seleccionado no existe.");
-                    return;
+            if (request.getParameter("guardar") != null) {
+
+                try {
+
+                    barco = new Barco(
+                            Integer.parseInt(request.getParameter("barco")),
+                            "", "", ""
+                    );
+
+                    muelle = new Muelle(
+                            Integer.parseInt(request.getParameter("muelle")),
+                            null, "", ""
+                    );
+
+                    String fechaSalida = request.getParameter("fecha_salida");
+
+                    atraque = new Atraque(
+                            0,
+                            barco,
+                            muelle,
+                            LocalDateTime.parse(
+                                    request.getParameter("fecha_llegada")
+                            ),
+                            fechaSalida == null || fechaSalida.isEmpty()
+                                    ? null : LocalDateTime.parse(fechaSalida),
+                            request.getParameter("estado")
+                    );
+
+                    if (atraqueDAO.InsertarAtraque(
+                            atraque, idusuario, usuario)) {
+
+                        request.setAttribute(
+                                "mensaje",
+                                "Atraque registrado correctamente."
+                        );
+
+                    } else {
+
+                        request.setAttribute(
+                                "error",
+                                "No se pudo registrar el atraque. "
+                                + "Verifique que el barco y el muelle estén "
+                                + "activos y que las fechas sean correctas."
+                        );
+                    }
+
+                } catch (Exception ex) {
+
+                    request.setAttribute(
+                            "error",
+                            "Los datos del atraque no son válidos."
+                    );
                 }
-
-                atraque = new Atraque(Integer.parseInt(request.getParameter("id")),
-                        barco, muelle,
-                        LocalDateTime.parse(request.getParameter("fecha_llegada")),
-                        request.getParameter("fecha_salida").isEmpty()
-                            ? null : LocalDateTime.parse(request.getParameter("fecha_salida")),
-                        request.getParameter("estado"));
-
-                atraqueDAO.ModificarAtraque(atraque);
-                // CAMBIO: Regresa al listado actualizado
-                response.sendRedirect("atraque?mostrar");
-                return;
             }
 
-            // Elimina un atraque
-            if(request.getParameter("eliminar") != null) {
-                atraque = new Atraque(Integer.parseInt(request.getParameter("id")),
-                        null, null, null, null, "");
-                atraqueDAO.EliminarAtraque(atraque);
+            // MODIFICAR ATRAQUE
 
-                // CAMBIO: Actualiza el listado
-                response.sendRedirect("atraque?mostrar");
-                return;
+            if (request.getParameter("modificar") != null) {
+
+                try {
+
+                    barco = new Barco(
+                            Integer.parseInt(request.getParameter("barco")),
+                            "", "", ""
+                    );
+
+                    muelle = new Muelle(
+                            Integer.parseInt(request.getParameter("muelle")),
+                            null, "", ""
+                    );
+
+                    String fechaSalida = request.getParameter("fecha_salida");
+
+                    atraque = new Atraque(
+                            Integer.parseInt(request.getParameter("id")),
+                            barco,
+                            muelle,
+                            LocalDateTime.parse(
+                                    request.getParameter("fecha_llegada")
+                            ),
+                            fechaSalida == null || fechaSalida.isEmpty()
+                                    ? null : LocalDateTime.parse(fechaSalida),
+                            request.getParameter("estado")
+                    );
+
+                    if (atraqueDAO.ModificarAtraque(
+                            atraque, idusuario, usuario)) {
+
+                        request.setAttribute(
+                                "mensaje",
+                                "Atraque modificado correctamente."
+                        );
+
+                    } else {
+
+                        request.setAttribute(
+                                "error",
+                                "No se pudo modificar el atraque. "
+                                + "Verifique las fechas, las relaciones "
+                                + "y los registros seleccionados."
+                        );
+                    }
+
+                } catch (Exception ex) {
+
+                    request.setAttribute(
+                            "error",
+                            "Los datos del atraque no son válidos."
+                    );
+                }
+            }
+
+            // ELIMINAR ATRAQUE
+
+            if (request.getParameter("eliminar") != null) {
+
+                atraque = new Atraque(
+                        Integer.parseInt(request.getParameter("id")),
+                        null, null, null, null, ""
+                );
+
+                int resultado = atraqueDAO.EliminarAtraque(
+                        atraque, idusuario, usuario
+                );
+
+                if (resultado == 1) {
+
+                    request.setAttribute(
+                            "mensaje",
+                            "Atraque eliminado correctamente."
+                    );
+
+                } else if (resultado == 0) {
+
+                    request.setAttribute(
+                            "error",
+                            "No se puede eliminar el atraque porque "
+                            + "tiene cargas relacionadas."
+                    );
+
+                } else if (resultado == -2) {
+
+                    request.setAttribute(
+                            "error",
+                            "El atraque no existe o ya fue eliminado."
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "error",
+                            "Ocurrió un error al eliminar el atraque."
+                    );
+                }
+            }
+
+            // ACTUALIZAR LISTADO
+
+            if (request.getParameter("guardar") != null
+                    || request.getParameter("modificar") != null
+                    || request.getParameter("eliminar") != null) {
+
+                request.setAttribute(
+                        "DatosAtraque",
+                        atraqueDAO.MostrarAtraques()
+                );
             }
 
             req = request.getRequestDispatcher("VistaAtraque.jsp");
             req.forward(request, response);
+
         }
     }
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

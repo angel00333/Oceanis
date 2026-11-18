@@ -536,3 +536,1154 @@ h1, h2, h3, h4, h5, h6 {
         height: 44px;
     }
 }
+
+
+/* ==========================================
+   OCEANIS SYSTEM - INICIO DE SESIÓN
+   ========================================== */
+
+.ocean-login-page {
+    margin: 0;
+    min-height: 100vh;
+    background: #0B1220;
+    color: #E2E8F0;
+}
+
+.login-container {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    min-height: 100vh;
+}
+
+/* SECCIÓN IZQUIERDA */
+
+.login-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 45px 8%;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(11, 18, 32, 0.96),
+            rgba(16, 25, 54, 0.72)
+        ),
+        url('../img/puerto.jpg') center / cover no-repeat;
+}
+
+.login-brand {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.login-brand img {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.login-brand .brand-text h2 {
+    color: #E4DFBC;
+    font-size: 27px;
+    margin: 0;
+}
+
+.login-brand .brand-text span {
+    color: #94A3B8;
+    font-size: 13px;
+    letter-spacing: 2px;
+}
+
+.login-presentation {
+    max-width: 590px;
+}
+
+.login-label {
+    color: #E4DFBC;
+    letter-spacing: 3px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.login-presentation h1 {
+    color: #FFFFFF;
+    font-size: clamp(38px, 4.5vw, 65px);
+    line-height: 1.2;
+    margin-bottom: 25px;
+}
+
+.login-presentation h1 span {
+    color: #E4DFBC;
+}
+
+.login-presentation > p:last-child {
+    color: #B2C0D1;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+.login-footer {
+    color: #829AB1;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+/* SECCIÓN DERECHA */
+
+.login-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 35px;
+    background: #101B2D;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: #1C2C43;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    color: #E4DFBC;
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.login-box h2 {
+    color: #F8F5E7;
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+.login-description {
+    color: #94A3B8;
+    font-size: 16px;
+    margin-bottom: 35px;
+}
+
+/* CAMPOS DEL FORMULARIO */
+
+.login-form .form-label {
+    color: #CBD5E1;
+    font-size: 14px;
+    margin-bottom: 9px;
+}
+
+.login-form .input-group {
+    margin-bottom: 23px;
+}
+
+.login-form .input-group-text {
+    background: #162237;
+    border: 1px solid #334155;
+    color: #829AB1;
+    padding: 13px 16px;
+}
+
+.login-form .form-control {
+    background: #162237;
+    border: 1px solid #334155;
+    color: #FFFFFF;
+    padding: 13px 15px;
+    font-size: 15px;
+    box-shadow: none;
+}
+
+.login-form .form-control:focus {
+    background: #1C2C43;
+    color: #FFFFFF;
+    border-color: #829AB1;
+    box-shadow: none;
+}
+
+.login-form .form-control::placeholder {
+    color: #829AB1;
+}
+
+/* MOSTRAR CONTRASEÑA */
+
+.login-form .btn-password {
+    background: #162237;
+    border: 1px solid #334155;
+    color: #94A3B8;
+    padding: 0 16px;
+    cursor: pointer;
+}
+
+.login-form .btn-password:hover {
+    color: #E4DFBC;
+}
+
+/* BOTÓN INICIAR SESIÓN */
+
+.login-form .btn-login {
+    width: 100%;
+    background: #E4DFBC;
+    color: #101936;
+    border: none;
+    border-radius: 6px;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.login-form .btn-login:hover {
+    background: #F8F5E7;
+    color: #101936;
+}
+
+.login-form .btn-login:focus-visible,
+.login-form .btn-password:focus-visible {
+    outline: 2px solid #E4DFBC;
+    outline-offset: 3px;
+}
+
+/* MENSAJES Y PIE DEL LOGIN */
+
+.login-security {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #829AB1;
+    margin-top: 25px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.login-bottom {
+    margin-top: 45px;
+    padding-top: 25px;
+    border-top: 1px solid #293D59;
+    text-align: center;
+    color: #667C91;
+    font-size: 13px;
+}
+
+/* ADAPTACIÓN A PANTALLAS PEQUEÑAS */
+
+@media (max-width: 850px) {
+
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+
+    .login-info {
+        min-height: 300px;
+        padding: 30px;
+        gap: 35px;
+    }
+
+    .login-presentation h1 {
+        font-size: 35px;
+    }
+
+    .login-presentation > p:last-child {
+        font-size: 15px;
+    }
+
+    .login-section {
+        padding: 55px 25px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .login-brand img {
+        width: 55px;
+        height: 55px;
+    }
+
+    .login-brand .brand-text h2 {
+        font-size: 21px;
+    }
+
+    .login-presentation h1 {
+        font-size: 30px;
+    }
+
+    .login-section {
+        padding: 40px 20px;
+    }
+}
+
+
+/* ==========================================
+   OCEANIS SYSTEM - BIENVENIDO
+   ========================================== */
+
+.ocean-welcome-page {
+    min-height: 100vh;
+    margin: 0;
+    background: #0B1220;
+    color: #E2E8F0;
+}
+
+/* CONTENEDOR PRINCIPAL */
+
+.ocean-welcome-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 55px 6% 25px;
+}
+
+/* ENCABEZADO */
+
+.ocean-welcome-header {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 40px;
+}
+
+.ocean-welcome-label {
+    color: #E4DFBC;
+    font-size: 13px;
+    letter-spacing: 3px;
+    margin-bottom: 18px;
+}
+
+.ocean-welcome-header h1 {
+    color: #FFFFFF;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.25;
+    margin-bottom: 22px;
+}
+
+.ocean-welcome-header h1 span {
+    color: #E4DFBC;
+}
+
+.ocean-welcome-description {
+    color: #94A3B8;
+    font-size: 17px;
+    line-height: 1.8;
+    margin: 0;
+}
+
+.ocean-welcome-description strong {
+    color: #E4DFBC;
+}
+
+/* BANNER DEL PUERTO */
+
+.ocean-welcome-banner {
+    position: relative;
+    width: 100%;
+    height: 460px;
+    overflow: hidden;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    background: #162237;
+}
+
+.ocean-welcome-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* CAPA OSCURA SOBRE LA IMAGEN */
+
+.ocean-welcome-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 35px 45px;
+    background: linear-gradient(
+        0deg,
+        rgba(11, 18, 32, 0.92) 0%,
+        rgba(11, 18, 32, 0.32) 45%,
+        transparent 75%
+    );
+}
+
+.ocean-welcome-overlay-content {
+    max-width: 650px;
+}
+
+.ocean-welcome-overlay-content p {
+    color: #E4DFBC;
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.ocean-welcome-overlay-content h2 {
+    color: #FFFFFF;
+    font-size: clamp(23px, 3vw, 36px);
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* PIE DE PÁGINA */
+
+.ocean-welcome-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 28px 0 10px;
+    color: #829AB1;
+    font-size: 13px;
+}
+
+.ocean-welcome-footer i {
+    color: #E4DFBC;
+    margin-right: 8px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .ocean-welcome-container {
+        padding: 35px 5% 20px;
+    }
+
+    .ocean-welcome-header {
+        margin-bottom: 30px;
+    }
+
+    .ocean-welcome-description {
+        font-size: 15px;
+    }
+
+    .ocean-welcome-banner {
+        height: 350px;
+    }
+
+    .ocean-welcome-overlay {
+        padding: 25px;
+    }
+
+    .ocean-welcome-footer {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .ocean-welcome-label {
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+
+    .ocean-welcome-banner {
+        height: 280px;
+    }
+
+    .ocean-welcome-overlay {
+        padding: 18px;
+    }
+
+    .ocean-welcome-overlay-content h2 {
+        font-size: 22px;
+    }
+}
+
+
+/* ==========================================
+   NAVBAR - USUARIO Y CIERRE DE SESIÓN
+   ========================================== */
+
+.ocean-navbar-user {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.ocean-user-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 15px;
+    background: transparent;
+    color: #E4DFBC;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.ocean-user-button:hover,
+.ocean-user-button:focus {
+    background: #162237;
+    border-color: #334155;
+    color: #FFFFFF;
+}
+
+.ocean-user-button .fa-circle-user {
+    font-size: 24px;
+    color: #E4DFBC;
+}
+
+.ocean-user-menu {
+    min-width: 220px;
+    padding: 8px;
+    background: #162237;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.ocean-user-info {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 5px;
+}
+
+.ocean-user-info span {
+    color: #94A3B8;
+    font-size: 12px;
+}
+
+.ocean-user-info strong {
+    color: #E4DFBC;
+    font-size: 15px;
+}
+
+.ocean-user-menu .dropdown-divider {
+    border-color: #334155;
+    margin: 5px 0;
+}
+
+.ocean-user-menu .ocean-logout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    color: #E2E8F0;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+.ocean-user-menu .ocean-logout:hover {
+    background: #293D59;
+    color: #FFFFFF;
+}
+
+.ocean-user-menu .ocean-logout i {
+    color: #E4DFBC;
+}
+
+@media (max-width: 576px) {
+
+    .ocean-user-button {
+        padding: 8px;
+        gap: 7px;
+        font-size: 13px;
+    }
+
+    .ocean-user-button .fa-circle-user {
+        font-size: 20px;
+    }
+}
+
+
+/* ==========================================
+   OCEANIS SYSTEM - DASHBOARD
+   ========================================== */
+
+.ocean-dashboard-page {
+    min-height: 100vh;
+    margin: 0;
+    background: #0B1220;
+    color: #E2E8F0;
+}
+
+.ocean-dashboard-container {
+    width: 100%;
+    max-width: 1450px;
+    margin: 0 auto;
+    padding: 40px 5% 25px;
+}
+
+/* ENCABEZADO */
+
+.ocean-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.ocean-dashboard-label {
+    color: #E4DFBC;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.ocean-dashboard-header h1 {
+    color: #FFFFFF;
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.ocean-dashboard-header p:not(.ocean-dashboard-label) {
+    color: #94A3B8;
+    margin-bottom: 0;
+}
+
+.ocean-dashboard-role {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #162237;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 11px 18px;
+    color: #E4DFBC;
+    white-space: nowrap;
+}
+
+/* TARJETAS PRINCIPALES */
+
+.ocean-dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.ocean-stat-card {
+    background: #101B2D;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 25px;
+    transition: 0.2s ease;
+}
+
+.ocean-stat-card:hover {
+    border-color: #829AB1;
+    transform: translateY(-3px);
+}
+
+.ocean-stat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.ocean-stat-top span {
+    color: #94A3B8;
+    font-size: 14px;
+}
+
+.ocean-stat-top i {
+    color: #E4DFBC;
+    font-size: 23px;
+}
+
+.ocean-stat-card h2 {
+    color: #FFFFFF;
+    font-size: 42px;
+    margin-bottom: 8px;
+}
+
+.ocean-stat-card p {
+    color: #829AB1;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+/* PANELES */
+
+.ocean-dashboard-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.ocean-dashboard-panel {
+    background: #101B2D;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 28px;
+}
+
+.ocean-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.ocean-panel-header h2 {
+    color: #F8F5E7;
+    font-size: 21px;
+    margin: 0;
+}
+
+.ocean-panel-header i {
+    color: #E4DFBC;
+    font-size: 20px;
+}
+
+.ocean-panel-description {
+    color: #94A3B8;
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+/* ESTADO DE MUELLES */
+
+.ocean-status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 19px;
+}
+
+.ocean-status-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.ocean-status-heading span {
+    color: #CBD5E1;
+    font-size: 14px;
+}
+
+.ocean-status-heading strong {
+    color: #F8F5E7;
+}
+
+.ocean-status-item small {
+    display: block;
+    text-align: right;
+    color: #94A3B8;
+    margin-top: 5px;
+}
+
+.ocean-progress {
+    display: block;
+    width: 100%;
+    height: 9px;
+    appearance: none;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #293D59;
+}
+
+.ocean-progress::-webkit-progress-bar {
+    background: #293D59;
+}
+
+.ocean-progress::-webkit-progress-value {
+    background: var(--progress-color);
+    border-radius: 10px;
+}
+
+.ocean-progress::-moz-progress-bar {
+    background: var(--progress-color);
+    border-radius: 10px;
+}
+
+.ocean-progress.disponible {
+    --progress-color: #3FA88A;
+}
+
+.ocean-progress.ocupado {
+    --progress-color: #D6A45B;
+}
+
+.ocean-progress.mantenimiento {
+    --progress-color: #829AB1;
+}
+
+.ocean-progress.fuera-servicio {
+    --progress-color: #C36B73;
+}
+
+/* OPERACIONES DE ATRAQUE */
+
+.ocean-operation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.ocean-operation-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border: 1px solid #293D59;
+    border-radius: 7px;
+    background: #162237;
+}
+
+.ocean-operation-item > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ocean-operation-item span {
+    color: #CBD5E1;
+    font-size: 14px;
+}
+
+.ocean-operation-item strong {
+    color: #FFFFFF;
+    font-size: 21px;
+}
+
+.ocean-programado {
+    color: #D6A45B;
+}
+
+.ocean-operacion {
+    color: #70B8D8;
+}
+
+.ocean-finalizado {
+    color: #3FA88A;
+}
+
+.ocean-operation-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #334155;
+}
+
+.ocean-operation-total span {
+    color: #94A3B8;
+}
+
+.ocean-operation-total strong {
+    color: #E4DFBC;
+    font-size: 25px;
+}
+
+/* INDICADORES SECUNDARIOS */
+
+.ocean-dashboard-secondary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.ocean-mini-stat {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #101B2D;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 25px;
+    min-width: 0;
+}
+
+.ocean-mini-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 55px;
+    height: 55px;
+    flex-shrink: 0;
+    background: #1C2C43;
+    color: #E4DFBC;
+    border-radius: 10px;
+    font-size: 23px;
+}
+
+.ocean-mini-stat span {
+    color: #94A3B8;
+    font-size: 13px;
+}
+
+.ocean-mini-stat h3 {
+    color: #FFFFFF;
+    font-size: 27px;
+    margin: 6px 0 0;
+    overflow-wrap: anywhere;
+}
+
+.ocean-mini-stat small {
+    color: #829AB1;
+    font-size: 11px;
+}
+
+/* TABLA DE ATRAQUES */
+
+.ocean-dashboard-table {
+    margin-bottom: 25px;
+}
+
+.ocean-dashboard-table .ocean-table-responsive {
+    overflow-x: auto;
+}
+
+.ocean-dashboard-table .ocean-table {
+    width: 100%;
+    min-width: 680px;
+}
+
+.ocean-dashboard-status {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 5px;
+    border: 1px solid #486581;
+    color: #E4DFBC;
+    background: #1C2C43;
+    font-size: 12px;
+}
+
+/* PIE DE PÁGINA */
+
+.ocean-dashboard-footer {
+    color: #829AB1;
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+
+    .ocean-dashboard-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ocean-dashboard-secondary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+
+    .ocean-dashboard-container {
+        padding: 30px 5% 20px;
+    }
+
+    .ocean-dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ocean-dashboard-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .ocean-dashboard-panel {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .ocean-dashboard-stats,
+    .ocean-dashboard-secondary {
+        grid-template-columns: 1fr;
+    }
+
+    .ocean-dashboard-header h1 {
+        font-size: 30px;
+    }
+
+    .ocean-stat-card h2 {
+        font-size: 36px;
+    }
+}
+
+
+/* ==========================================
+   OCEANIS SYSTEM - HISTORIAL DE ACTIVIDADES
+   ========================================== */
+
+/* PANEL */
+
+.ocean-history-panel {
+    margin-bottom: 25px;
+}
+
+/* FILTRO POR FECHA */
+
+.ocean-history-filter {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    background: #162237;
+    border: 1px solid #334155;
+    border-radius: 8px;
+}
+
+.ocean-history-filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 230px;
+}
+
+.ocean-history-filter-field label {
+    color: #CBD5E1;
+    font-size: 14px;
+}
+
+.ocean-history-filter-field .form-control {
+    background: #101B2D;
+    border: 1px solid #334155;
+    color: #E2E8F0;
+    padding: 10px 13px;
+}
+
+.ocean-history-filter-field .form-control:focus {
+    background: #101B2D;
+    border-color: #829AB1;
+    color: #FFFFFF;
+    box-shadow: none;
+}
+
+.ocean-history-filter-field input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1);
+}
+
+.ocean-history-filter-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ocean-history-filter-actions .btn {
+    padding: 10px 17px;
+}
+
+/* ICONOS DE INDICADORES */
+
+.ocean-history-create {
+    color: #3FA88A;
+}
+
+.ocean-history-update {
+    color: #D6A45B;
+}
+
+.ocean-history-delete {
+    color: #C36B73;
+}
+
+/* TABLA */
+
+.ocean-history-panel .ocean-table {
+    width: 100%;
+    min-width: 1000px;
+}
+
+.ocean-history-panel .ocean-table td {
+    vertical-align: middle;
+}
+
+.ocean-history-user-icon {
+    color: #829AB1;
+    margin-right: 8px;
+}
+
+/* ETIQUETAS DE ACTIVIDADES */
+
+.ocean-history-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 11px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ocean-history-badge-create {
+    background: rgba(63, 168, 138, 0.15);
+    border: 1px solid #3FA88A;
+    color: #70D7B3;
+}
+
+.ocean-history-badge-update {
+    background: rgba(214, 164, 91, 0.15);
+    border: 1px solid #D6A45B;
+    color: #E7C489;
+}
+
+.ocean-history-badge-delete {
+    background: rgba(195, 107, 115, 0.15);
+    border: 1px solid #C36B73;
+    color: #E99BA3;
+}
+
+/* SIN ACTIVIDADES */
+
+.ocean-history-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 35px 20px;
+    text-align: center;
+    color: #94A3B8;
+}
+
+.ocean-history-empty i {
+    font-size: 35px;
+    color: #829AB1;
+}
+
+.ocean-history-empty p {
+    margin: 0;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 576px) {
+
+    .ocean-history-filter {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ocean-history-filter-field {
+        min-width: 100%;
+    }
+
+    .ocean-history-filter-actions {
+        flex-direction: column;
+    }
+
+    .ocean-history-filter-actions .btn {
+        width: 100%;
+    }
+}

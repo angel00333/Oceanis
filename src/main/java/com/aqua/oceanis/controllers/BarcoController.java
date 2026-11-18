@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import com.aqua.oceanis.models.*;
 
 /**
@@ -33,33 +34,158 @@ public class BarcoController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            
             Barco barco;
             BarcoDAO barcoDAO = new BarcoDAO();
             RequestDispatcher req;
-            if(request.getParameter("mostrar") != null) {
-            if(request.getParameter("texto") == null)
-                request.setAttribute("DatosBarco", barcoDAO.MostrarBarcos());
-            else
-                request.setAttribute("DatosBarco", barcoDAO.BuscarBarcos(request.getParameter("texto")));
+
+            HttpSession sesion = request.getSession(false);
+
+            if (sesion == null
+                    || sesion.getAttribute("sesion") == null
+                    || !(sesion.getAttribute("idusuario") instanceof Integer)) {
+
+                response.sendRedirect("login.jsp");
+                return;
             }
-            
-            if(request.getParameter("guardar") != null) {
-                barco = new Barco(1, request.getParameter("nombre"), request.getParameter("tipo"), request.getParameter("pais"));
-                barcoDAO.InsertarBarco(barco);
+
+            int idusuario = (Integer) sesion.getAttribute("idusuario");
+            String usuario = sesion.getAttribute("sesion").toString();
+
+            // MOSTRAR BARCOS
+
+            if (request.getParameter("mostrar") != null) {
+
+                if (request.getParameter("texto") == null) {
+
+                    request.setAttribute(
+                            "DatosBarco",
+                            barcoDAO.MostrarBarcos()
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "DatosBarco",
+                            barcoDAO.BuscarBarcos(
+                                    request.getParameter("texto")
+                            )
+                    );
+                }
             }
-                     
-            if(request.getParameter("eliminar") != null) {
-                barco = new Barco(Integer.parseInt(request.getParameter("id")), "", "", "");
-                barcoDAO.EliminarBarco(barco);
+
+            // GUARDAR BARCO
+
+            if (request.getParameter("guardar") != null) {
+
+                barco = new Barco(
+                        0,
+                        request.getParameter("nombre"),
+                        request.getParameter("tipo"),
+                        request.getParameter("pais")
+                );
+
+                if (barcoDAO.InsertarBarco(barco, idusuario, usuario)) {
+
+                    request.setAttribute(
+                            "mensaje",
+                            "Barco registrado correctamente."
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "error",
+                            "No se pudo registrar el barco."
+                    );
+                }
             }
-            
-            if(request.getParameter("modificar") != null) {
-                barco = new Barco(Integer.parseInt(request.getParameter("id")), request.getParameter("nombre"),request.getParameter("tipo"), request.getParameter("pais") );
-                barcoDAO.ModificarBarco(barco);
+
+            // MODIFICAR BARCO
+
+            if (request.getParameter("modificar") != null) {
+
+                barco = new Barco(
+                        Integer.parseInt(request.getParameter("id")),
+                        request.getParameter("nombre"),
+                        request.getParameter("tipo"),
+                        request.getParameter("pais")
+                );
+
+                if (barcoDAO.ModificarBarco(barco, idusuario, usuario)) {
+
+                    request.setAttribute(
+                            "mensaje",
+                            "Barco modificado correctamente."
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "error",
+                            "No se pudo modificar el barco."
+                    );
+                }
             }
-            
+
+            // ELIMINAR BARCO
+
+            if (request.getParameter("eliminar") != null) {
+
+                barco = new Barco(
+                        Integer.parseInt(request.getParameter("id")),
+                        "", "", ""
+                );
+
+                int resultado = barcoDAO.EliminarBarco(
+                        barco, idusuario, usuario
+                );
+
+                if (resultado == 1) {
+
+                    request.setAttribute(
+                            "mensaje",
+                            "Barco eliminado correctamente."
+                    );
+
+                } else if (resultado == 0) {
+
+                    request.setAttribute(
+                            "error",
+                            "No se puede eliminar el barco porque tiene atraques relacionados."
+                    );
+
+                } else if (resultado == -2) {
+
+                    request.setAttribute(
+                            "error",
+                            "El barco no existe o ya fue eliminado."
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "error",
+                            "Ocurrió un error al eliminar el barco."
+                    );
+                }
+            }
+
+            // ACTUALIZAR LOS REGISTROS
+
+            if (request.getParameter("guardar") != null
+                    || request.getParameter("modificar") != null
+                    || request.getParameter("eliminar") != null) {
+
+                request.setAttribute(
+                        "DatosBarco",
+                        barcoDAO.MostrarBarcos()
+                );
+            }
+
             req = request.getRequestDispatcher("VistaBarco.jsp");
             req.forward(request, response);
+
         }
     }
 

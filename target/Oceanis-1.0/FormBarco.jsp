@@ -5,6 +5,14 @@
 --%>
 
 <%@page import="java.util.*, com.aqua.oceanis.models.*" contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    HttpSession sesion = request.getSession(false);
+
+    if(sesion == null || sesion.getAttribute("sesion") == null){
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -43,8 +51,7 @@
             <h1><%=barco.getId() == 0 ? "Nuevo barco" : "Modificar barco"%></h1>
 
             <form action="barco?<%=accion%>" method="post">
-
-                <input type="hidden" name="id" value="<%=barco.getId()%>"/>
+             <input type="hidden" name="id" value="<%=barco.getId()%>"/>
 
                 <div class="mb-3">
                     <label>Nombre</label>

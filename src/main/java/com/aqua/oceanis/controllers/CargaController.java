@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import com.aqua.oceanis.models.*;
 import java.math.BigDecimal;
-
+import jakarta.servlet.http.HttpSession;
 /**
  *
  * @author a503o
@@ -35,86 +35,184 @@ public class CargaController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
             Carga carga;
             Atraque atraque;
             Cliente cliente;
+
             CargaDAO cargaDAO = new CargaDAO();
-            AtraqueDAO atraqueDAO = new AtraqueDAO();
-            ClienteDAO clienteDAO = new ClienteDAO();
             RequestDispatcher req;
 
-            if(request.getParameter("mostrar") != null) {
-                if(request.getParameter("texto") == null)
-                    request.setAttribute("DatosCarga", cargaDAO.MostrarCargas());
-                else
-                    request.setAttribute("DatosCarga", cargaDAO.BuscarCargas(request.getParameter("texto")));
+            HttpSession sesion = request.getSession(false);
+
+            if (sesion == null
+                    || sesion.getAttribute("sesion") == null
+                    || !(sesion.getAttribute("idusuario") instanceof Integer)) {
+
+                response.sendRedirect("login.jsp");
+                return;
             }
 
-             // Guarda la carga con sus relaciones maestro-detalle
-            if(request.getParameter("guardar") != null) {
-                // CAMBIO: Obtiene los objetos maestros seleccionados
-                atraque = atraqueDAO.ObtenerAtraquePorId(Integer.parseInt(request.getParameter("idatraque")));
-                cliente = clienteDAO.ObtenerClientePorId(Integer.parseInt(request.getParameter("idcliente")));
+            int idusuario = (Integer) sesion.getAttribute("idusuario");
+            String usuario = sesion.getAttribute("sesion").toString();
 
-                // CAMBIO: Verifica que existan los registros
-                if(atraque == null || cliente == null) {
-                    response.sendError(400, "El atraque o cliente seleccionado no existe.");
-                    return;
+            // MOSTRAR CARGAS
+
+            if (request.getParameter("mostrar") != null) {
+
+                if (request.getParameter("texto") == null) {
+
+                    request.setAttribute(
+                            "DatosCarga",
+                            cargaDAO.MostrarCargas()
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "DatosCarga",
+                            cargaDAO.BuscarCargas(
+                                    request.getParameter("texto")
+                            )
+                    );
                 }
+            }
 
-                carga = new Carga(0, atraque, cliente,
+            // GUARDAR CARGA
+
+            if (request.getParameter("guardar") != null) {
+
+                atraque = new Atraque(
+                        Integer.parseInt(request.getParameter("atraque")),
+                        null, null, null, null, ""
+                );
+
+                cliente = new Cliente(
+                        Integer.parseInt(request.getParameter("cliente")),
+                        "", ""
+                );
+
+                carga = new Carga(
+                        0,
+                        atraque,
+                        cliente,
                         request.getParameter("descripcion"),
                         new BigDecimal(request.getParameter("peso")),
-                        request.getParameter("tipo"));
+                        request.getParameter("tipo")
+                );
 
-                // CAMBIO: Verifica que se haya guardado
-                if(cargaDAO.InsertarCarga(carga) > 0)
-                    response.sendRedirect("carga?mostrar");
-                else
-                    response.sendError(500, "No se pudo guardar la carga.");
-                return;
+                if (cargaDAO.InsertarCarga(carga, idusuario, usuario)) {
+
+                    request.setAttribute(
+                            "mensaje",
+                            "Carga registrada correctamente."
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "error",
+                            "No se pudo registrar la carga. "
+                            + "Verifique que el atraque y el cliente estén activos."
+                    );
+                }
             }
 
-           
-            // Modifica una carga existente
-            if(request.getParameter("modificar") != null) {
-                // CAMBIO: Obtiene los objetos maestros seleccionados
-                atraque = atraqueDAO.ObtenerAtraquePorId(Integer.parseInt(request.getParameter("idatraque")));
-                cliente = clienteDAO.ObtenerClientePorId(Integer.parseInt(request.getParameter("idcliente")));
+            // MODIFICAR CARGA
 
-                if(atraque == null || cliente == null) {
-                    response.sendError(400, "El atraque o cliente seleccionado no existe.");
-                    return;
-                }
+            if (request.getParameter("modificar") != null) {
 
-                carga = new Carga(Integer.parseInt(request.getParameter("id")),
-                        atraque, cliente,
+                atraque = new Atraque(
+                        Integer.parseInt(request.getParameter("atraque")),
+                        null, null, null, null, ""
+                );
+
+                cliente = new Cliente(
+                        Integer.parseInt(request.getParameter("cliente")),
+                        "", ""
+                );
+
+                carga = new Carga(
+                        Integer.parseInt(request.getParameter("id")),
+                        atraque,
+                        cliente,
                         request.getParameter("descripcion"),
                         new BigDecimal(request.getParameter("peso")),
-                        request.getParameter("tipo"));
+                        request.getParameter("tipo")
+                );
 
-                // CAMBIO: Verifica que se haya modificado
-                if(cargaDAO.ModificarCarga(carga) > 0)
-                    response.sendRedirect("carga?mostrar");
-                else
-                    response.sendError(500, "No se pudo modificar la carga.");
-                return;
+                if (cargaDAO.ModificarCarga(carga, idusuario, usuario)) {
+
+                    request.setAttribute(
+                            "mensaje",
+                            "Carga modificada correctamente."
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "error",
+                            "No se pudo modificar la carga. "
+                            + "Verifique el atraque, el cliente y el peso."
+                    );
+                }
             }
 
-                        if(request.getParameter("eliminar") != null) {
-                carga = new Carga(Integer.parseInt(request.getParameter("id")),
-                        null, null, "", BigDecimal.ZERO, "");
+            // ELIMINAR CARGA
 
-                // CAMBIO: Elimina y verifica el resultado
-                if(cargaDAO.EliminarCarga(carga) > 0)
-                    response.sendRedirect("carga?mostrar");
-                else
-                    response.sendError(500, "No se pudo eliminar la carga.");
-                return;
+            if (request.getParameter("eliminar") != null) {
+
+                carga = new Carga(
+                        Integer.parseInt(request.getParameter("id")),
+                        null,
+                        null,
+                        "",
+                        BigDecimal.ZERO,
+                        ""
+                );
+
+                int resultado = cargaDAO.EliminarCarga(
+                        carga, idusuario, usuario
+                );
+
+                if (resultado == 1) {
+
+                    request.setAttribute(
+                            "mensaje",
+                            "Carga eliminada correctamente."
+                    );
+
+                } else if (resultado == -2) {
+
+                    request.setAttribute(
+                            "error",
+                            "La carga no existe o ya fue eliminada."
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "error",
+                            "Ocurrió un error al eliminar la carga."
+                    );
+                }
+            }
+
+            // ACTUALIZAR LISTADO
+
+            if (request.getParameter("guardar") != null
+                    || request.getParameter("modificar") != null
+                    || request.getParameter("eliminar") != null) {
+
+                request.setAttribute(
+                        "DatosCarga",
+                        cargaDAO.MostrarCargas()
+                );
             }
 
             req = request.getRequestDispatcher("VistaCarga.jsp");
             req.forward(request, response);
+
         }
     }
 

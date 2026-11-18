@@ -4,6 +4,7 @@ C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis
 C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\controllers\ClienteController.java
 C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\controllers\MuelleController.java
 C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\controllers\PuertoController.java
+C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\controllers\UsuarioController.java
 C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\JakartaRestConfiguration.java
 C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\models\Atraque.java
 C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\models\AtraqueDAO.java
@@ -14,6 +15,7 @@ C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis
 C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\models\Cliente.java
 C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\models\ClienteDAO.java
 C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\models\Conexion.java
+C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\models\HistorialDAO.java
 C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\models\Muelle.java
 C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\models\MuelleDAO.java
 C:\Users\a503o\Documents\NetBeansProjects\Oceanis\src\main\java\com\aqua\oceanis\models\Puerto.java

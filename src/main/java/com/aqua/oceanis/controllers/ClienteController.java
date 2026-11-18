@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import com.aqua.oceanis.models.*;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -32,34 +33,156 @@ public class ClienteController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-        Cliente cliente;
-        ClienteDAO clienteDAO = new ClienteDAO();
-        RequestDispatcher req;
+        
+            Cliente cliente;
+            ClienteDAO clienteDAO = new ClienteDAO();
+            RequestDispatcher req;
 
-        if(request.getParameter("mostrar") != null) {
-            if(request.getParameter("texto") == null)
-                request.setAttribute("DatosCliente", clienteDAO.MostrarClientes());
-            else
-                request.setAttribute("DatosCliente", clienteDAO.BuscarClientes(request.getParameter("texto")));
-        }
+            HttpSession sesion = request.getSession(false);
 
-        if(request.getParameter("guardar") != null) {
-            cliente = new Cliente(1, request.getParameter("nombre"), request.getParameter("telefono"));
-            clienteDAO.InsertarCliente(cliente);
-        }
+            if (sesion == null
+                    || sesion.getAttribute("sesion") == null
+                    || !(sesion.getAttribute("idusuario") instanceof Integer)) {
 
-        if(request.getParameter("eliminar") != null) {
-            cliente = new Cliente(Integer.parseInt(request.getParameter("id")), "", "");
-            clienteDAO.EliminarCliente(cliente);
-        }
+                response.sendRedirect("login.jsp");
+                return;
+            }
 
-        if(request.getParameter("modificar") != null) {
-            cliente = new Cliente(Integer.parseInt(request.getParameter("id")), request.getParameter("nombre"), request.getParameter("telefono"));
-            clienteDAO.ModificarCliente(cliente);
-        }
+            int idusuario = (Integer) sesion.getAttribute("idusuario");
+            String usuario = sesion.getAttribute("sesion").toString();
 
-        req = request.getRequestDispatcher("VistaCliente.jsp");
-        req.forward(request, response);
+            // MOSTRAR CLIENTES
+
+            if (request.getParameter("mostrar") != null) {
+
+                if (request.getParameter("texto") == null) {
+
+                    request.setAttribute(
+                            "DatosCliente",
+                            clienteDAO.MostrarClientes()
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "DatosCliente",
+                            clienteDAO.BuscarClientes(
+                                    request.getParameter("texto")
+                            )
+                    );
+                }
+            }
+
+            // GUARDAR CLIENTE
+
+            if (request.getParameter("guardar") != null) {
+
+                cliente = new Cliente(
+                        0,
+                        request.getParameter("nombre"),
+                        request.getParameter("telefono")
+                );
+
+                if (clienteDAO.InsertarCliente(cliente, idusuario, usuario)) {
+
+                    request.setAttribute(
+                            "mensaje",
+                            "Cliente registrado correctamente."
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "error",
+                            "No se pudo registrar el cliente."
+                    );
+                }
+            }
+
+            // MODIFICAR CLIENTE
+
+            if (request.getParameter("modificar") != null) {
+
+                cliente = new Cliente(
+                        Integer.parseInt(request.getParameter("id")),
+                        request.getParameter("nombre"),
+                        request.getParameter("telefono")
+                );
+
+                if (clienteDAO.ModificarCliente(cliente, idusuario, usuario)) {
+
+                    request.setAttribute(
+                            "mensaje",
+                            "Cliente modificado correctamente."
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "error",
+                            "No se pudo modificar el cliente."
+                    );
+                }
+            }
+
+            // ELIMINAR CLIENTE
+
+            if (request.getParameter("eliminar") != null) {
+
+                cliente = new Cliente(
+                        Integer.parseInt(request.getParameter("id")),
+                        "", ""
+                );
+
+                int resultado = clienteDAO.EliminarCliente(
+                        cliente, idusuario, usuario
+                );
+
+                if (resultado == 1) {
+
+                    request.setAttribute(
+                            "mensaje",
+                            "Cliente eliminado correctamente."
+                    );
+
+                } else if (resultado == 0) {
+
+                    request.setAttribute(
+                            "error",
+                            "No se puede eliminar el cliente porque tiene cargas relacionadas."
+                    );
+
+                } else if (resultado == -2) {
+
+                    request.setAttribute(
+                            "error",
+                            "El cliente no existe o ya fue eliminado."
+                    );
+
+                } else {
+
+                    request.setAttribute(
+                            "error",
+                            "Ocurrió un error al eliminar el cliente."
+                    );
+                }
+            }
+
+            // ACTUALIZAR REGISTROS
+
+            if (request.getParameter("guardar") != null
+                    || request.getParameter("modificar") != null
+                    || request.getParameter("eliminar") != null) {
+
+                request.setAttribute(
+                        "DatosCliente",
+                        clienteDAO.MostrarClientes()
+                );
+            }
+
+            req = request.getRequestDispatcher("VistaCliente.jsp");
+            req.forward(request, response);
+
         }
     }
 

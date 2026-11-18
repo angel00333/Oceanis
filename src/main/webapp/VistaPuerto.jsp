@@ -5,6 +5,14 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    HttpSession sesion = request.getSession(false);
+
+    if(sesion == null || sesion.getAttribute("sesion") == null){
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,6 +30,25 @@
         <div class="container mt-3">
 
             <h2>Lista de puertos</h2>
+            
+            <c:if test="${not empty mensaje}">
+
+                <div class="alert alert-success" role="alert">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <c:out value="${mensaje}"/>
+                </div>
+
+            </c:if>
+
+            <c:if test="${not empty error}">
+
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <c:out value="${error}"/>
+                </div>
+
+            </c:if>
+
 
             <a href="FormPuerto.jsp?id=0&n=1" class="btn btn-primary">
                 Nuevo puerto
